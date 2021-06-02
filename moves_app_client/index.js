@@ -47,8 +47,29 @@ function renderMovies(movies){
 
 function renderMovie(movie){
     moviesContainer.innerHTML += `
-        <img id=${movie.attributes.id} src=${movie.attributes.img}>
+        <div class="movie-item" id=${movie.attributes.id}>
+            <img 
+                id=${movie.attributes.id} 
+                src=${movie.attributes.img}
+            >
+            <button>Edit</button>
+            <button>Delete</button>
+        </div>
     `
+    const div = document.querySelector('.movie-item')
+    div.addEventListener('click', handleBttnClick)
+}
+
+function handleBttnClick(e){
+    if (event.target.innerHTML === "Delete"){
+        handleDelete(event.target)
+    } else if (event.target.innerHTML === 'Edit'){
+        handleEdit(event.target)
+    }
+}
+
+function handleDelete(element){
+    element.parentElement.remove()
 }
 
 function handleMovieClick(event){
