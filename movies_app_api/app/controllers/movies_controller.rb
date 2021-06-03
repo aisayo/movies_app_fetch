@@ -2,7 +2,7 @@ class MoviesController < ApplicationController
 
     def index 
         movies = Movie.all
-        render json: MovieSerializer.new(movies)
+        render json: MovieSerializer.new(movies) 
     end 
 
     def show
@@ -17,6 +17,12 @@ class MoviesController < ApplicationController
         else 
             render json: {error: 'Movie was not saved'}
         end 
+    end 
+
+    def destroy 
+        movie = Movie.find_by_id(params[:id])
+        movie.destroy
+        render json: {message: "#{movie.name} has been successfully deleted"}
     end 
 
 

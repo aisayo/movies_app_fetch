@@ -26,8 +26,9 @@ function handleSubmit(e){
     fetch('http://localhost:3000/movies', options)
     .then(resp => resp.json())
     .then(data => {
-        const movie = data.data.attributes
+        const movie = data.data
         renderMovie(movie)
+        clearForm()
     })
 }
 
@@ -56,11 +57,10 @@ function renderMovie(movie){
             <button>Delete</button>
         </div>
     `
-    const div = document.querySelector('.movie-item')
-    div.addEventListener('click', handleBttnClick)
+    // moviesContainer.addEventListener('click', handleBttnClick)
 }
 
-function handleBttnClick(e){
+function handleBttnClick(event){
     if (event.target.innerHTML === "Delete"){
         handleDelete(event.target)
     } else if (event.target.innerHTML === 'Edit'){
@@ -70,12 +70,25 @@ function handleBttnClick(e){
 
 function handleDelete(element){
     element.parentElement.remove()
+    const id = element.parentElement.id
+    fetch(`http://localhost:3000/movies/${id}`, {
+        method: 'DELETE'
+    })
+    .then(resp => resp.json())
+    .then(data => {
+        alert(data["message"])
+    })
 }
 
 function handleMovieClick(event){
-   if (event.target.nodeName === 'IMG'){
+    if (event.target.nodeName === 'IMG'){
        getMovie(event.target.id)
-   }
+    } else if (event.target.innerHTML === "Delete"){
+        handleDelete(event.target)
+    } else if (event.target.innerHTML === 'Edit'){
+        handleEdit(event.target)
+}
+
 }
 
 function getMovie(movieId){
@@ -84,17 +97,22 @@ function getMovie(movieId){
     .then(movie => {
         form.remove()
         let movieDetails = movie.data.attributes
-        moviesContainer.innerHTML = `
-            <img src=${movieDetails.img}><br>
-            Movie Name: ${movieDetails.name}<br>
-            Release Date: ${movieDetails.release_year}<br>
-            Run Time: ${movieDetails.run_time}<br>
-            <br>
-            <a id="back" href=#>Back</a>
-        `
-        const backButton = document.getElementById('back')
-        backButton.addEventListener('click', goBack)
+        renderMovieDetails(movieDetails)
     })
+}
+
+function renderMovieDetails(movieDetails){
+    moviesContainer.innerHTML = `
+    <img src=${movieDetails.img}><br>
+    Movie Name: ${movieDetails.name}<br>
+    Release Date: ${movieDetails.release_year}<br>
+    Run Time: ${movieDetails.run_time}<br>
+    <br>
+    <a id="back" href=#>Back</a>
+`
+const backButton = document.getElementById('back')
+backButton.addEventListener('click', goBack)
+
 }
 
 function goBack(){
@@ -103,5 +121,15 @@ function goBack(){
     getMovies()
 }
 
+function clearForm(){
+    let inputArr = Array.from(formContainer.firstElementChild.children)
+    inputArr.forEach(input => { 
+        if (input.value !== "Create Movie"){
+            input.value = "" 
+        }
+    })
+}
+
 
 getMovies()
+
