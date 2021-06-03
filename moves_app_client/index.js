@@ -3,7 +3,9 @@
 
 fetch(url)
     .then(resp => resp.json())
-    .then(data => otherFunction(data))
+    .then(function(data){
+        otherFunction(data)}
+        ) // function declaration
 
 fetch(url)
     .then(resp => resp.json())
@@ -12,14 +14,9 @@ fetch(url)
         // do something with data
     })
     
-fetch(url, {
-    method: 'GET', 
-    headers: {
-        
-    }
-})
+fetch(url)
     .then(resp => resp.json())
-    .then(otherFunction)
+    .then(otherFunction) // function definition
 
 // fetch returns a promise 
 // .then is a method available to the promise class
