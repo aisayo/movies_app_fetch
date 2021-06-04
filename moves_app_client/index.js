@@ -70,7 +70,7 @@ function handleButton(event){
    if (event.target.innerText === 'Delete'){
        deleteMovie(event.target)
    } else if (event.target.innerText === 'Edit'){
-       // do something with edit 
+       editMovie(event.target) 
    }
 }
 
@@ -120,8 +120,12 @@ function getFormData(){
         run_time: document.querySelector("#movie-run-time").value,
         img: document.querySelector("#movie-img").value
     }
-    
+
     return movie
+}
+
+function editMovie(target){
+    debugger;
 }
 
 getMovies()
