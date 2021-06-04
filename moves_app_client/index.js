@@ -1,4 +1,5 @@
 const moviesContainer = document.querySelector("#movies-container")
+let moviesArr = []
 
 function getMovies(){
     fetch('http://127.0.0.1:3000/movies')
@@ -7,7 +8,7 @@ function getMovies(){
 }
 
 function renderMovies(movies){
-    let moviesArr = movies.data
+    moviesArr = movies.data
     moviesArr.forEach(movie => {
         renderMovie(movie)
     })
@@ -18,8 +19,11 @@ function renderMovie(movie){
     moviesContainer.innerHTML += `
         <div data-id=${movieDetails.id}>
             <img data-id=${movieDetails.id} class="movie-img" src=${movieDetails.img} />
+            <br>
             <button>Edit</button>
             <button>Delete</button>
+            <br>
+            <br>
         </div>
     `
     const movieImgs = document.getElementsByClassName('movie-img')    
@@ -79,7 +83,6 @@ function deleteMovie(element){
     .then(data => alert(data.message))
 }
 
-
-
 getMovies()
+
 
